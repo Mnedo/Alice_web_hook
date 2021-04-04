@@ -62,7 +62,7 @@ def main():
 
 def handle_dialog(req, res):
     global data
-    
+
     user_id = req['session']['user_id']
 
     if req['session']['new']:
@@ -102,8 +102,8 @@ def handle_dialog(req, res):
         ]:
             # Пользователь согласился, прощаемся.
             res['response']['text'] = 'Слона можно найти на Яндекс.Маркете!'
-            return
-    
+            data['is_buy'] = True
+
         # Если нет, то убеждаем его купить слона!
         res['response']['text'] = \
             f"Все говорят '{req['request']['original_utterance']}', а ты купи слона!"
@@ -119,6 +119,7 @@ def handle_dialog(req, res):
         ]:
             # Пользователь согласился, прощаемся.
             res['response']['text'] = 'Кролика можно найти на Яндекс.Маркете!'
+            res['response']['end_session'] = True
             return
 
         # Если нет, то убеждаем его купить слона!
@@ -126,6 +127,7 @@ def handle_dialog(req, res):
             f"Все говорят '{req['request']['original_utterance']}', а ты купи кролика!"
         res['response']['buttons'] = get_suggests(user_id)
         
+
 
 
 # Функция возвращает две подсказки для ответа.
