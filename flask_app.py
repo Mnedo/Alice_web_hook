@@ -68,10 +68,10 @@ def handle_dialog(req, res):
         return
     
     if req['request']['original_utterance'].lower() in [
-        'Беру',
+        'беру',
     ]:
         data['is_bought'] = True
-        res['response']['text'] = 'Кролика можно найти на Яндекс.Маркете!'
+        res['response']['text'] = 'Купи кролика'
         return
 
     # Если нет, то убеждаем его купить слона!
