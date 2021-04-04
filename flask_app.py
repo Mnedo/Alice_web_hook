@@ -1,6 +1,7 @@
+import os
 from flask import Flask, request
 import logging
-import os
+
 # библиотека, которая нам понадобится для работы с JSON
 import json
 
@@ -41,6 +42,7 @@ def handle_dialog(req, res):
     user_id = req['session']['user_id']
 
     if req['session']['new']:
+        res['response']['text'] = 'Купи слона'
         sessionStorage[user_id] = {
             'suggests': [
                 "Не хочу.",
@@ -49,7 +51,6 @@ def handle_dialog(req, res):
             ]
         }
         data = {'is_bought': False}
-        res['response']['text'] = 'Купи слона'
         res['response']['buttons'] = get_suggests(user_id)
         return
 
@@ -61,6 +62,15 @@ def handle_dialog(req, res):
     ]:
         if not data['is_bought']:
             # Пользователь согласился, прощаемся.
+            sessionStorage[user_id] = {
+                'suggests': [
+                    "Не хочу.",
+                    "Не буду.",
+                    "Отстань!",
+                ]
+            }
+            data = {'is_bought': False}
+            res['response']['buttons'] = get_suggests(user_id)
             res['response']['text'] = 'Слона можно найти на Яндекс.Маркете!'
         else:
             res['response']['text'] = 'Кролика можно найти на Яндекс.Маркете!'
