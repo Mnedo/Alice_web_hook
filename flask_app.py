@@ -28,7 +28,7 @@ def main():
     handle_dialog(request.json, response)
 
     logging.info(f'Response:  {response!r}')
-
+    logging.info(f'sessionStorage:  {sessionStorage}')
     return json.dumps(response)
 
 
