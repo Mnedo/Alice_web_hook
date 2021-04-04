@@ -61,14 +61,17 @@ def handle_dialog(req, res):
         'хорошо'
     ]:
         if not data['is_bought']:
-            # Пользователь согласился, прощаемся.
-
-            data = {'is_bought': False}
-            res['response']['buttons'] = get_suggests(user_id)
             res['response']['text'] = 'Слона можно найти на Яндекс.Маркете!'
         else:
             res['response']['text'] = 'Кролика можно найти на Яндекс.Маркете!'
             res['response']['end_session'] = True
+        return
+    
+    if req['request']['original_utterance'].lower() in [
+        'Беру',
+    ]:
+        data['is_bought'] = True
+        res['response']['text'] = 'Кролика можно найти на Яндекс.Маркете!'
         return
 
     # Если нет, то убеждаем его купить слона!
@@ -105,7 +108,7 @@ def get_suggests(user_id):
                 ]
             }
             suggests.append({
-                "title": "Ладно",
+                "title": "Беру",
                 "url": "https://market.yandex.ru/search?text=слон",
                 "hide": True
             })
