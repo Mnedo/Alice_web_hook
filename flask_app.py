@@ -66,12 +66,20 @@ def handle_dialog(req, res):
             res['response']['text'] = 'Кролика можно найти на Яндекс.Маркете!'
             res['response']['end_session'] = True
         return
-    
+
     if req['request']['original_utterance'].lower() in [
         'беру',
     ]:
         data['is_bought'] = True
-        res['response']['text'] = 'Купи кролика'
+        sessionStorage[user_id] = {
+            'suggests': [
+                "Не хочу.",
+                "Не буду.",
+                "Отстань!",
+            ]
+        }
+        res['response']['buttons'] = get_suggests(user_id)
+        res['response']['text'] = 'Купи кролика!'
         return
 
     # Если нет, то убеждаем его купить слона!
@@ -120,6 +128,7 @@ def get_suggests(user_id):
             })
 
     return suggests
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
