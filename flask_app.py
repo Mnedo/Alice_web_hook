@@ -62,13 +62,7 @@ def handle_dialog(req, res):
     ]:
         if not data['is_bought']:
             # Пользователь согласился, прощаемся.
-            sessionStorage[user_id] = {
-                'suggests': [
-                    "Не хочу.",
-                    "Не буду.",
-                    "Отстань!",
-                ]
-            }
+
             data = {'is_bought': False}
             res['response']['buttons'] = get_suggests(user_id)
             res['response']['text'] = 'Слона можно найти на Яндекс.Маркете!'
@@ -103,6 +97,13 @@ def get_suggests(user_id):
 
     if len(suggests) < 2:
         if not data['is_bought']:
+            sessionStorage[user_id] = {
+                'suggests': [
+                    "Не хочу.",
+                    "Не буду.",
+                    "Отстань!",
+                ]
+            }
             suggests.append({
                 "title": "Ладно",
                 "url": "https://market.yandex.ru/search?text=слон",
@@ -116,7 +117,6 @@ def get_suggests(user_id):
             })
 
     return suggests
-
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
