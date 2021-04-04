@@ -44,7 +44,7 @@ def handle_dialog(req, res):
             ],
             'have_bought': False
         }
-
+        res['response']['text'] = 'Купи слона'
         res['response']['buttons'] = get_suggests(user_id)
         return
 
