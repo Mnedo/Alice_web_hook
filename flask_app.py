@@ -96,6 +96,11 @@ def handle_dialog(res, req):
                     {
                         'title': 'Нет',
                         'hide': True
+                    },
+                    {
+                        'title': 'Показать город',
+                        "url": 'https://yandex.ru/maps/?mode=search&text={}'.format(sessionStorage[user_id]['city'].title()),
+                        'hide': True
                     }
                 ]
         else:
