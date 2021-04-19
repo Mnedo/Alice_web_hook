@@ -86,9 +86,6 @@ def handle_dialog(res, req):
             elif 'нет' in req['request']['nlu']['tokens']:
                 res['response']['text'] = 'Ну и ладно!'
                 res['end_session'] = True
-            elif 'помощь' in req['request']['nlu']['tokens']:
-                res['response']['text'] = 'Пссс... Это {}.'.format(sessionStorage[user_id]['city'].title())
-                play_game(res, req)
             else:
                 res['response']['text'] = 'Не поняла ответа! Так да или нет?'
                 res['response']['buttons'] = [
@@ -128,6 +125,7 @@ def play_game(res, req):
                 'hide': True
             }
         ]
+
     else:
         # сюда попадаем, если попытка отгадать не первая
         city = sessionStorage[user_id]['city']
@@ -154,7 +152,10 @@ def play_game(res, req):
                 # иначе показываем следующую картинку
                 res['response']['card'] = {}
                 res['response']['card']['type'] = 'BigImage'
-                res['response']['card']['title'] = 'Неправильно. Вот тебе дополнительное фото'
+                if 'помощь' in req['request']['nlu']['tokens']:
+                    res['response']['card']['title'] = 'Пссс... Это {}.'.format(sessionStorage[user_id]['city'].title())
+                else:
+                    res['response']['card']['title'] = 'Неправильно. Вот тебе дополнительное фото'
                 res['response']['buttons'] = [
                     {
                         'title': 'Помощь',
