@@ -96,11 +96,6 @@ def handle_dialog(res, req):
                     {
                         'title': 'Нет',
                         'hide': True
-                    },
-                    {
-                        'title': 'Показать город',
-                        "url": 'https://yandex.ru/maps/?mode=search&text={}'.format(sessionStorage[user_id]['city'].title()),
-                        'hide': True
                     }
                 ]
         else:
@@ -139,6 +134,22 @@ def play_game(res, req):
             # если да, то добавляем город к sessionStorage[user_id]['guessed_cities'] и
             # отправляем пользователя на второй круг. Обратите внимание на этот шаг на схеме.
             res['response']['text'] = 'Правильно! Сыграем ещё?'
+            res['response']['buttons'] = [
+                {
+                    'title': 'Да',
+                    'hide': True
+                },
+                {
+                    'title': 'Нет',
+                    'hide': True
+                },
+                {
+                    'title': 'Показать город',
+                    "url": 'https://yandex.ru/maps/?mode=search&text={}'.format(
+                        sessionStorage[user_id]['city'].title()),
+                    'hide': True
+                }
+            ]
             sessionStorage[user_id]['guessed_cities'].append(city)
             sessionStorage[user_id]['game_started'] = False
             return
@@ -150,6 +161,22 @@ def play_game(res, req):
                 # добавляем город к sessionStorage[user_id]['guessed_cities'] и отправляем его на второй круг.
                 # Обратите внимание на этот шаг на схеме.
                 res['response']['text'] = f'Вы пытались. Это {city.title()}. Сыграем ещё?'
+                res['response']['buttons'] = [
+                    {
+                        'title': 'Да',
+                        'hide': True
+                    },
+                    {
+                        'title': 'Нет',
+                        'hide': True
+                    },
+                    {
+                        'title': 'Показать город',
+                        "url": 'https://yandex.ru/maps/?mode=search&text={}'.format(
+                            sessionStorage[user_id]['city'].title()),
+                        'hide': True
+                    }
+                ]
                 sessionStorage[user_id]['game_started'] = False
                 sessionStorage[user_id]['guessed_cities'].append(city)
                 return
