@@ -75,7 +75,7 @@ def handle_dialog(res, req):
                 if len(sessionStorage[user_id]['guessed_cities']) == 3:
                     # если все три города отгаданы, то заканчиваем игру
                     res['response']['text'] = 'Поздравляем, {}. Ты отгадал все города!'.format(
-                        get_first_name(req).title())
+                        sessionStorage[user_id]['first_name'])
                     res['end_session'] = True
                 else:
                     # если есть неотгаданные города, то продолжаем игру
@@ -85,10 +85,11 @@ def handle_dialog(res, req):
                     # функция, которая выбирает город для игры и показывает фото
                     play_game(res, req)
             elif 'нет' in req['request']['nlu']['tokens']:
-                res['response']['text'] = 'Ну и ладно {}!'.format(get_first_name(req).title())
+                res['response']['text'] = 'Ну и ладно {}!'.format(sessionStorage[user_id]['first_name'])
                 res['end_session'] = True
             else:
-                res['response']['text'] = '{}, не поняла ответа! Так да или нет?'.format(get_first_name(req).title())
+                res['response']['text'] = '{}, не поняла ответа! Так да или нет?'.format(
+                    sessionStorage[user_id]['first_name'])
                 res['response']['buttons'] = [
                     {
                         'title': 'Да',
@@ -118,7 +119,7 @@ def play_game(res, req):
         # добавляем в ответ картинку
         res['response']['card'] = {}
         res['response']['card']['type'] = 'BigImage'
-        res['response']['card']['title'] = 'Что это за город, {}?'.format(get_first_name(req).title())
+        res['response']['card']['title'] = 'Что это за город, {}?'.format(sessionStorage[user_id]['first_name'])
         res['response']['card']['image_id'] = cities[city][attempt - 1]
         res['response']['text'] = 'Тогда сыграем!'
         res['response']['buttons'] = [
@@ -136,7 +137,8 @@ def play_game(res, req):
             if get_city(req) == city:
                 # если да, то добавляем город к sessionStorage[user_id]['guessed_cities'] и
                 # отправляем пользователя на второй круг. Обратите внимание на этот шаг на схеме.
-                res['response']['text'] = 'Правильно! Угадаете страну, {}?'.format(get_first_name(req).title())
+                res['response']['text'] = 'Правильно! Угадаете страну, {}?'.format(
+                    sessionStorage[user_id]['first_name'])
                 res['response']['buttons'] = [
                     {
                         'title': 'Да',
@@ -166,7 +168,7 @@ def play_game(res, req):
             if get_country(req) == country:
                 # если да, то добавляем город к sessionStorage[user_id]['guessed_cities'] и
                 # отправляем пользователя на второй круг. Обратите внимание на этот шаг на схеме.
-                res['response']['text'] = 'Правильно! Сыграем еще, {}?'.format(get_first_name(req).title())
+                res['response']['text'] = 'Правильно! Сыграем еще, {}?'.format(sessionStorage[user_id]['first_name'])
                 res['response']['buttons'] = [
                     {
                         'title': 'Да',
@@ -216,7 +218,7 @@ def play_game(res, req):
                     res['response']['card']['title'] = 'Пссс... Это {}.'.format(sessionStorage[user_id]['city'].title())
                 else:
                     res['response']['card']['title'] = 'Неправильно, {}. Вот тебе дополнительное фото'.format(
-                        get_first_name(req).title())
+                        sessionStorage[user_id]['first_name'])
                 res['response']['buttons'] = [
                     {
                         'title': 'Помощь',
@@ -224,7 +226,7 @@ def play_game(res, req):
                     }
                 ]
                 res['response']['card']['image_id'] = cities[city][attempt - 1]
-                res['response']['text'] = 'А вот и не угадал, {}!'.format(get_first_name(req).title())
+                res['response']['text'] = 'А вот и не угадал, {}!'.format(sessionStorage[user_id]['first_name'])
 
     # увеличиваем номер попытки доля следующего шага
     sessionStorage[user_id]['attempt'] += 1
