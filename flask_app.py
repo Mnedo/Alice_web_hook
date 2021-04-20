@@ -233,24 +233,16 @@ def get_city(req):
 
 
 def get_country(req):
-    url = "https://geocode-maps.yandex.ru/1.x/"
-    for entity in req['request']['nlu']['entities']:
-        params = {
-            'geocode': entity,
-            'format': 'json',
-            'apikey': "40d1649f-0493-4b70-98ba-98533de7710b"
-        }
-
-        response = requests.get(url, params)
-        try:
-            json = response.json()
-
-            return \
-                json['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty'][
-                    'GeocoderMetaData'][
-                    'AddressDetails']['Country']['CountryName']
-        except Exception:
-            pass
+    global sessionStorage
+    
+    city = sessionStorage[user_id]['city']
+    sl = {'франция': 'париж', 'россия': 'москва', 'сша': 'нью-йорк'}
+    for entity in req['request']['nlu']['tokens']:
+        if entity in sl.keys():
+            if sl[entity] == city:
+                return entity
+            else:
+                return 
 
 
 def get_first_name(req):
@@ -262,7 +254,3 @@ def get_first_name(req):
             # Во всех остальных случаях возвращаем None.
             return entity['value'].get('first_name', None)
 
-        
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)        
