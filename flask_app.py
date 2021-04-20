@@ -35,11 +35,11 @@ def handle_dialog(req, res):
     user_id = req['session']['user_id']
 
     if req['session']['new']:
-        res['response']['text'] = 'Привет! Что хочещб перевести?'
+        res['response']['text'] = 'Привет! Что хочешь перевести?'
         return
     else:
         phrase = req['request']['nlu']['tokens'][2:]
-        translated = MyMemoryTranslator(source="ru", target="en").translate(text=phrase)
+        translated = MyMemoryTranslator(source="ru", target="en").translate(text="".join(phrase))
         res['response']['text'] = translated
 
 
