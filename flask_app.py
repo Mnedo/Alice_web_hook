@@ -235,6 +235,7 @@ def get_city(req):
 def get_country(req):
     global sessionStorage
     
+    user_id = req['session']['user_id']
     city = sessionStorage[user_id]['city']
     sl = {'франция': 'париж', 'россия': 'москва', 'сша': 'нью-йорк'}
     for entity in req['request']['nlu']['tokens']:
