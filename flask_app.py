@@ -151,7 +151,7 @@ def play_game(res, req):
                     {
                         'title': 'Показать город',
                         "url": 'https://yandex.ru/maps/?mode=search&text={}'.format(
-                            sessionStorage[user_id]['city'].title()),
+                            sessionStorage[user_id]['city']),
                         'hide': True
                     }
                 ]
@@ -189,8 +189,9 @@ def play_game(res, req):
                 # В этом случае говорим ответ пользователю,
                 # добавляем город к sessionStorage[user_id]['guessed_cities'] и отправляем его на второй круг.
                 # Обратите внимание на этот шаг на схеме.
+                name = sessionStorage[user_id]['first_name']
                 res['response'][
-                    'text'] = f'Вы пытались. Это {city.title()}. Сыграем ещё, {get_first_name(req).title()}?'
+                    'text'] = f'Вы пытались. Это {city.title()}. Сыграем ещё, {name}?'
                 res['response']['buttons'] = [
                     {
                         'title': 'Да',
