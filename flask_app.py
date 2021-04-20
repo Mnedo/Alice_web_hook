@@ -157,6 +157,11 @@ def play_game(res, req):
                 sessionStorage[user_id]['game_started'] = True
                 return
         elif sessionStorage[user_id]['type'] == 'country':
+            country = ''
+            sl = {'франция': 'париж', 'россия': 'москва', 'сша': 'нью-йорк'}
+            for k in sl.keys():
+                if sl[k] == city:
+                    country = k
             if get_country(req) == country:
                 # если да, то добавляем город к sessionStorage[user_id]['guessed_cities'] и
                 # отправляем пользователя на второй круг. Обратите внимание на этот шаг на схеме.
@@ -218,7 +223,6 @@ def play_game(res, req):
                 res['response']['card']['image_id'] = cities[city][attempt - 1]
                 res['response']['text'] = 'А вот и не угадал!'
 
-
     # увеличиваем номер попытки доля следующего шага
     sessionStorage[user_id]['attempt'] += 1
 
@@ -234,7 +238,7 @@ def get_city(req):
 
 def get_country(req):
     global sessionStorage
-    
+
     user_id = req['session']['user_id']
     city = sessionStorage[user_id]['city']
     sl = {'франция': 'париж', 'россия': 'москва', 'сша': 'нью-йорк'}
@@ -243,7 +247,7 @@ def get_country(req):
             if sl[entity] == city:
                 return entity
             else:
-                return 
+                return
 
 
 def get_first_name(req):
@@ -255,7 +259,7 @@ def get_first_name(req):
             # Во всех остальных случаях возвращаем None.
             return entity['value'].get('first_name', None)
 
-        
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
